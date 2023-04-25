@@ -1,0 +1,14 @@
+spring:
+    profiles:
+        active: demo
+
+kafka:
+    bootstrap-servers: "localhost:29092"
+    group_id: "kafka_demo"
+    topic:
+        input:
+            genericInputTopic: "inputTopic"
+        output:
+            genericOutputTopic: "outputTopic"
+            nasa: "nasa"
+            darpa: "darpa"
