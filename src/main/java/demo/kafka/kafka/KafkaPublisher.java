@@ -1,10 +1,6 @@
 package demo.kafka.kafka;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import demo.kafka.data.PayloadData;
-import demo.kafka.kafka.Integrations;
-import demo.kafka.kafka.KafkaTopics;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

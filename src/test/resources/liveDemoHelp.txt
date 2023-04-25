@@ -1,0 +1,33 @@
+
+	Throwable throwOutputTopic = catchThrowable (() -> kafkaTestSupport.readKafkaMessage(kafkaTopics.getOutputTopic()));
+
+		assertThat(darpa1).isNotEmpty();
+		assertThat(darpa2).isNotEmpty();
+		assertThat(throwOutputTopic).isInstanceOf(IllegalStateException.class)
+				.hasMessageContaining("No records found for topic");
+
+------------------------------------------------------------------------------------------------------------------------
+
+        KStream<String, Payload> inputStream = inputData
+                .mapValues(this::mapToJava)
+                //.filter((s, payload) -> filterNASA(payload))
+                .peek((key, payload) -> log.info("Message received with id: {} and customer: {}", payload.id, payload.customers.size() > 0 ? payload.customers.get(0) : "unknown"));
+
+        inputStream.split()
+                .branch(
+                        (key, payLoad) -> payLoad.customers.contains("NASA"),
+                        Branched.withConsumer(ks -> ks
+                                .mapValues(this::mapToJsonString)
+                                .to(kafkaTopics.getNasaTopic())))
+                .branch(
+                        (key, payLoad) -> payLoad.customers.contains("DARPA"),
+                        Branched.withConsumer(ks -> ks
+                                .mapValues(this::mapToJsonString)
+                                .to(kafkaTopics.getDarpaTopic()))
+                )
+                .branch(
+                        (key, payLoad) -> true,
+                        Branched.withConsumer(ks -> ks
+                                .mapValues(this::mapToJsonString)
+                                .to(kafkaTopics.getOutputTopic()))
+                );
