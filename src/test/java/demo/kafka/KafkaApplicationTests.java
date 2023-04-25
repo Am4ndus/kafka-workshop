@@ -9,9 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
-
 @AutoConfigureObservability
 @SpringBootTest
 class KafkaApplicationTests {
