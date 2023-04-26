@@ -1,5 +1,7 @@
-package demo.kafka.kafka;
+package demo.kafka.kafka.support;
 
+import demo.kafka.kafka.KafkaTopics;
+import demo.kafka.kafka.support.KafkaTopicCreator;
 import jakarta.annotation.PostConstruct;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.springframework.context.annotation.Configuration;

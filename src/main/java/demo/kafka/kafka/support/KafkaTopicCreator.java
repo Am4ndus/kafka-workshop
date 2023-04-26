@@ -1,4 +1,4 @@
-package demo.kafka.kafka;
+package demo.kafka.kafka.support;
 
 import static java.util.stream.Collectors.toList;
 

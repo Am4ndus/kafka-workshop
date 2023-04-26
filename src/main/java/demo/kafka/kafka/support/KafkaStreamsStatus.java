@@ -1,4 +1,4 @@
-package demo.kafka.kafka;
+package demo.kafka.kafka.support;
 
 import java.util.Optional;
 import java.util.function.Supplier;
