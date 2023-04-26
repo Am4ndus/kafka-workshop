@@ -1,4 +1,12 @@
 
+                .mapValues(this::mapToJava)
+                .peek((key, payload) -> log.info("Message received with id: {} and customer: {}", payload.id, payload.customers.size() > 0 ? payload.customers.get(0) : "unknown"))
+                .mapValues(this::mapToJsonString)
+                .to(kafkaTopics.getOutputTopic());
+
+------------------------------------------------------------------------------------------------------------------------
+
+
 	Throwable throwOutputTopic = catchThrowable (() -> kafkaTestSupport.readKafkaMessage(kafkaTopics.getOutputTopic()));
 
 		assertThat(darpa1).isNotEmpty();
