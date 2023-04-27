@@ -28,6 +28,13 @@ public class Integrations {
     @Bean
     public KStream<String, String> buildStreams(StreamsBuilder kStreamsBuilder) {
         KStream<String, String> inputData = kStreamsBuilder.stream(kafkaTopics.getInputTopic());
+        inputData
+                .mapValues(this::mapToJava)
+                .filter((s, payload) -> filterNASA(payload))
+                .peek((key, payload) -> log.info("Message received with id: {} and customer: {}", payload.id, payload.customers.size() > 0 ? payload.customers.get(0) : "unknown"))
+                .mapValues(this::mapToJsonString)
+                .to(kafkaTopics.getOutputTopic());
+
         printTopology(kStreamsBuilder);
         return inputData;
     }
@@ -35,6 +42,10 @@ public class Integrations {
     private void printTopology(StreamsBuilder kStreamsBuilder) {
         Topology topology = kStreamsBuilder.build();
         log.info(topology.describe().toString());
+    }
+
+    private boolean filterNASA(Payload payload) {
+        return !payload.customers.contains("NASA");
     }
 
     private Payload mapToJava(String message) {

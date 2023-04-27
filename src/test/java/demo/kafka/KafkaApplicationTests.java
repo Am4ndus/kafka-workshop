@@ -9,6 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
+
 @AutoConfigureObservability
 @SpringBootTest
 class KafkaApplicationTests {
@@ -28,8 +31,19 @@ class KafkaApplicationTests {
 	//Hint 3: kafkaTestSupport støtter ikke lese mer enn 1 melding fra topicet. Derfor må vi lese output før vi skriver ny melding til input
 	@Test
 	void sendThreeMessagesToKafkaTopicAndValidateThatDataWhereCustomersIncludeNasaIsFiltereOut() {
-		List<String> data = PayloadData.payloadData; //inneholder liste med json data
+		kafkaTestSupport.sendKafkaMessage(kafkaTopics.getInputTopic(), PayloadData.payloadData.get(0));
+		String darpa1 = kafkaTestSupport.readKafkaMessage(kafkaTopics.getOutputTopic());
 
+		kafkaTestSupport.sendKafkaMessage(kafkaTopics.getInputTopic(), PayloadData.payloadData.get(1));
+		String darpa2 = kafkaTestSupport.readKafkaMessage(kafkaTopics.getOutputTopic());
+
+		kafkaTestSupport.sendKafkaMessage(kafkaTopics.getInputTopic(), PayloadData.payloadData.get(2));
+		Throwable throwOutputTopic = catchThrowable (() -> kafkaTestSupport.readKafkaMessage(kafkaTopics.getOutputTopic()));
+
+		assertThat(darpa1).isNotEmpty();
+		assertThat(darpa2).isNotEmpty();
+		assertThat(throwOutputTopic).isInstanceOf(IllegalStateException.class)
+				.hasMessageContaining("No records found for topic");
 	}
 
 	//Hint 1: Nå har vi flere input topics. Kan vi verifisere at meldingene blir sendt til riktig output topic?
