@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import demo.kafka.data.Payload;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.kstream.Branched;
 import org.apache.kafka.streams.kstream.KStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +29,29 @@ public class Integrations {
     @Bean
     public KStream<String, String> buildStreams(StreamsBuilder kStreamsBuilder) {
         KStream<String, String> inputData = kStreamsBuilder.stream(kafkaTopics.getInputTopic());
-        inputData
+
+        KStream<String, Payload> inputStream = inputData
                 .mapValues(this::mapToJava)
-                .filter((s, payload) -> filterNASA(payload))
-                .peek((key, payload) -> log.info("Message received with id: {} and customer: {}", payload.id, payload.customers.size() > 0 ? payload.customers.get(0) : "unknown"))
-                .mapValues(this::mapToJsonString)
-                .to(kafkaTopics.getOutputTopic());
+                .peek((key, payload) -> log.info("Message received with id: {} and customer: {}", payload.id, payload.customers.size() > 0 ? payload.customers.get(0) : "unknown"));
+
+        inputStream.split()
+                .branch(
+                        (key, payLoad) -> payLoad.customers.contains("NASA"),
+                        Branched.withConsumer(ks -> ks
+                                .mapValues(this::mapToJsonString)
+                                .to(kafkaTopics.getNasaTopic())))
+                .branch(
+                        (key, payLoad) -> payLoad.customers.contains("DARPA"),
+                        Branched.withConsumer(ks -> ks
+                                .mapValues(this::mapToJsonString)
+                                .to(kafkaTopics.getDarpaTopic()))
+                )
+                .branch(
+                        (key, payLoad) -> true,
+                        Branched.withConsumer(ks -> ks
+                                .mapValues(this::mapToJsonString)
+                                .to(kafkaTopics.getOutputTopic()))
+                );
 
         printTopology(kStreamsBuilder);
         return inputData;
@@ -44,10 +62,6 @@ public class Integrations {
         log.info(topology.describe().toString());
     }
 
-    private boolean filterNASA(Payload payload) {
-        return !payload.customers.contains("NASA");
-    }
-
     private Payload mapToJava(String message) {
         try {
             return mapper.readValue(message, Payload.class);
@@ -55,6 +69,10 @@ public class Integrations {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private boolean filterNASA(Payload payload) {
+        return !payload.customers.contains("NASA");
     }
 
     private String mapToJsonString(Payload payload) {

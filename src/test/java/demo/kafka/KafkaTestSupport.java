@@ -48,7 +48,9 @@ public class KafkaTestSupport {
         embeddedKafkaBroker.consumeFromEmbeddedTopics(
                 kafkaConsumer,
                 kafkaTopics.getInputTopic(),
-                kafkaTopics.getOutputTopic()
+                kafkaTopics.getOutputTopic(),
+                kafkaTopics.getNasaTopic(),
+                kafkaTopics.getDarpaTopic()
         );
 
         kafkaProducer = new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(KafkaTestUtils.producerProps(embeddedKafkaBroker)));
