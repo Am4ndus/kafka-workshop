@@ -54,12 +54,6 @@ public class KafkaTestSupport {
         kafkaProducer = new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(KafkaTestUtils.producerProps(embeddedKafkaBroker)));
     }
 
-/*    @PreDestroy
-    private void teardown() {
-        kafkaConsumer.close();
-        embeddedKafkaBroker.destroy();
-    }*/
-
     void sendKafkaMessage(String topic, String message, Header... headers){
         ProducerRecord<String, String> record = new ProducerRecord<>(topic, message);
         Arrays.stream(headers).forEach(header -> record.headers().add(header));

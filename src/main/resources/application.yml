@@ -1,6 +1,6 @@
 spring:
     profiles:
-        active: test
+        active: demo
 
 kafka:
     bootstrap-servers: "localhost:29092"
@@ -10,5 +10,3 @@ kafka:
             genericInputTopic: "inputTopic"
         output:
             genericOutputTopic: "outputTopic"
-            nasa: "nasa"
-            darpa: "darpa"

@@ -41,4 +41,14 @@ class KafkaApplicationTests {
 		//...and we can do our assertions.
 		assertThat(outputMessage).isNotNull();
 	}
+
+	@Test
+	void splitInputStreamAndPublishMessagesOnTwoNewTopic(){
+		//1. Go to the kStream and identify a way to split the stream into separate streams based on customer name
+		//2. add new topics in the application.yml
+		//3. include the new topics in the KafkaTopic class
+		//4. add the new topics to the consumeFromEmbeddedTopics function in KafkaTestSupport.
+		//5. create a test that published payloadData.get(0) = darpa and payloadData.get(1) = nasa and verify
+		//that the messages are sent to the new topics.
+	}
 }
