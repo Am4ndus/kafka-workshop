@@ -1,6 +1,6 @@
 package demo.kafka.data.model;
 
-class Dragon{
+public class Dragon{
     public String capsule;
     public int mass_returned_kg;
     public int mass_returned_lbs;

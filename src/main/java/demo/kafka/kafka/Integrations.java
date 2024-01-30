@@ -34,10 +34,6 @@ public class Integrations {
     @Bean
     public KStream<String, String> buildStreams(StreamsBuilder kStreamsBuilder) {
         KStream<String, String> inputData = kStreamsBuilder.stream(kafkaTopics.getInputTopic());
-        inputData
-                .mapValues(payloadReader::read)
-                .mapValues(payloadWriter::write)
-                .to(kafkaTopics.getOutputTopic());
         return inputData;
     }
 

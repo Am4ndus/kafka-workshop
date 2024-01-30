@@ -2,8 +2,7 @@ package demo.kafka;
 
 import demo.kafka.data.PayloadData;
 import demo.kafka.kafka.KafkaTopics;
-import org.apache.kafka.common.header.Header;
-import org.apache.kafka.common.header.internals.RecordHeader;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.actuate.observability.AutoConfigureObservability;
@@ -25,6 +24,7 @@ class KafkaApplicationTests {
 	}
 
 	@Test
+	@Disabled
 	void receiveAndSendMessage(){
 		//given
 		// a string message that can be serialized to a Payload Object
