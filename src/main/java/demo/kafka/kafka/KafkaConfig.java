@@ -22,6 +22,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ This class has the configuration properties of the Kafka Streams parameters.
+ It defines the KafkaStreamsConfiguration that tells the application the kafka host to listen to.
+ StreamsBuilderFactoryBean is defined to create a en streams-topology
+ The starting point is the kStream() that reads data from the source topic and hands out processing to
+ other processors.
+ */
 @Configuration
 public class KafkaConfig {
     private final Map<String, Object> kafkaProperties;
@@ -35,7 +42,7 @@ public class KafkaConfig {
         this.kafkaProperties.put(StreamsConfig.APPLICATION_ID_CONFIG, groupId);
         this.kafkaProperties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
         this.kafkaProperties.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, 1000);
-        this.kafkaProperties.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        this.kafkaProperties.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass()); //defines how messages will be serialized
         this.kafkaProperties.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
     }
 
@@ -46,7 +53,8 @@ public class KafkaConfig {
 
     @Bean
     public StreamsBuilderFactoryBean kafkaStreamsBuilder() {
-        return new StreamsBuilderFactoryBean(new KafkaStreamsConfiguration(kafkaProperties), new CleanupConfig(true, false));
+        return new StreamsBuilderFactoryBean(new KafkaStreamsConfiguration(kafkaProperties),
+                new CleanupConfig(true, false));
     }
 
     @Bean

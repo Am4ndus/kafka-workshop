@@ -1,9 +1,7 @@
 package demo.kafka.kafka;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import demo.kafka.data.Payload;
+import demo.kafka.kafka.support.PayloadReader;
+import demo.kafka.kafka.support.PayloadWriter;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
@@ -16,54 +14,35 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Integrations {
     private final KafkaTopics kafkaTopics;
+    private final PayloadReader payloadReader;
+    private final PayloadWriter payloadWriter;
     private final Logger log = LoggerFactory.getLogger(Integrations.class);
-    private final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     public Integrations(
-            KafkaTopics kafkaTopics) {
+            KafkaTopics kafkaTopics,
+            PayloadReader payloadReader,
+            PayloadWriter payloadWriter) {
         this.kafkaTopics = kafkaTopics;
+        this.payloadReader = payloadReader;
+        this.payloadWriter = payloadWriter;
     }
 
+    //Application topology
+    //KStream is an abstraction of a record stream of KeyValue pairs, i.e.,
+    // each record is an independent entity/event in the real world
     @Bean
     public KStream<String, String> buildStreams(StreamsBuilder kStreamsBuilder) {
         KStream<String, String> inputData = kStreamsBuilder.stream(kafkaTopics.getInputTopic());
         inputData
-                .mapValues(this::mapToJava)
-                .filter((s, payload) -> filterNASA(payload))
-                .peek((key, payload) -> log.info("Message received with id: {} and customer: {}", payload.id, payload.customers.size() > 0 ? payload.customers.get(0) : "unknown"))
-                .mapValues(this::mapToJsonString)
+                .mapValues(payloadReader::read)
+                .mapValues(payloadWriter::write)
                 .to(kafkaTopics.getOutputTopic());
-
-        printTopology(kStreamsBuilder);
         return inputData;
     }
 
     private void printTopology(StreamsBuilder kStreamsBuilder) {
         Topology topology = kStreamsBuilder.build();
         log.info(topology.describe().toString());
-    }
-
-    private boolean filterNASA(Payload payload) {
-        return !payload.customers.contains("NASA");
-    }
-
-    private Payload mapToJava(String message) {
-        try {
-            return mapper.readValue(message, Payload.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private String mapToJsonString(Payload payload) {
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        try {
-            return ow.writeValueAsString(payload);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }

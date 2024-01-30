@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Used to simulate input data to input topic. Uses PayloadData and sends one element at a random interval
+ */
 @Component
 @Profile("demo")
 public class KafkaPublisher {

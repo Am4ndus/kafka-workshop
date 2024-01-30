@@ -14,6 +14,10 @@ import org.apache.kafka.clients.admin.TopicListing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Used to create topics in the kafka broker.
+ * This process is usually done by OPS, but in this example we create the topics define in the KafkaTopics class
+ */
 public class KafkaTopicCreator {
     private static final Logger log = LoggerFactory.getLogger(KafkaTopicCreator.class);
     private final List<String> kafkaTopics;

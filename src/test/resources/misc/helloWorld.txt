@@ -1,4 +1,7 @@
 
+		Header payloadHeader = new RecordHeader("this is a header", "helloWorld".getBytes());
+
+----------------------------------------------------------------------
                 .mapValues(this::mapToJava)
                 .peek((key, payload) -> log.info("Message received with id: {} and customer: {}", payload.id, payload.customers.size() > 0 ? payload.customers.get(0) : "unknown"))
                 .mapValues(this::mapToJsonString)

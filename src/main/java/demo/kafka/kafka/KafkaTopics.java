@@ -34,12 +34,6 @@ public class KafkaTopics {
     public String getOutputTopic() {
         return outputTopic;
     }
-    public String getNasaTopic() {
-        return nasa;
-    }
-    public String getDarpaTopic() {
-        return darpa;
-    }
 
     public List<String> getAllTopics() {
         return List.of(inputTopic, outputTopic, nasa, darpa);

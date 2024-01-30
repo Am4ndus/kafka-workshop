@@ -1,0 +1,46 @@
+{
+  "dragon": {
+    "capsule": null,
+    "mass_returned_kg": null,
+    "mass_returned_lbs": null,
+    "flight_time_sec": null,
+    "manifest": null,
+    "water_landing": null,
+    "land_landing": null
+  },
+  "name": "Orbcomm-OG2-M2",
+  "type": "Satellite",
+  "reused": false,
+  "launch": "5eb87cefffd86e000604b342",
+  "customers": [
+    "Orbcomm"
+  ],
+  "norad_ids": [
+    41187
+  ],
+  "nationalities": [
+    "UnitedStates"
+  ],
+  "manufacturers": [
+    "Boeing"
+  ],
+  "mass_kg": 2034,
+  "mass_lbs": 4484,
+  "orbit": "LEO",
+  "reference_system": "geocentric",
+  "regime": "low-earth",
+  "longitude": null,
+  "semi_major_axis_km": 7087.639,
+  "eccentricity": 0.0002106,
+  "periapsis_km": 708.011,
+  "apoapsis_km": 710.996,
+  "inclination_deg": 47.0036,
+  "period_min": 98.972,
+  "lifespan_years": 5,
+  "epoch": "2022-01-14T07:18:16.000Z",
+  "mean_motion": 14.54957858,
+  "raan": 230.8503,
+  "arg_of_pericenter": 340.4453,
+  "mean_anomaly": 19.635,
+  "id": "5eb0e4beb6c3bb0006eeb1fd"
+}

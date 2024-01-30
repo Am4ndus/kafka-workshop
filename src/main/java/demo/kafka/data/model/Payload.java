@@ -1,4 +1,4 @@
-package demo.kafka.data;
+package demo.kafka.data.model;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,16 +32,6 @@ public class Payload{
     public double arg_of_pericenter;
     public double mean_anomaly;
     public String id;
-}
-
-class Dragon{
-    public String capsule;
-    public int mass_returned_kg;
-    public int mass_returned_lbs;
-    public int flight_time_sec;
-    public String manifest;
-    public boolean water_landing;
-    public boolean land_landing;
 }
 
 
