@@ -1,6 +1,6 @@
 spring:
     profiles:
-        active: demo
+        active: test
 
 kafka:
     bootstrap-servers: "localhost:29092"

@@ -24,7 +24,6 @@ class KafkaApplicationTests {
 	}
 
 	@Test
-	@Disabled
 	void receiveAndSendMessage(){
 		//given
 		// a string message that can be serialized to a Payload Object
