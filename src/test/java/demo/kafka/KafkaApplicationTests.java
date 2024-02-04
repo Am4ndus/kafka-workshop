@@ -65,11 +65,6 @@ class KafkaApplicationTests {
 	//that the messages are sent to the new topics.
 	@Test
 	void splitInputStreamAndPublishMessagesOnTwoNewTopic(){
-		String darpaMessageWithNameFalconSAT2 = PayloadData.payloadData.get(0);
-		String darpaMessageWithNameDemoSAT = PayloadData.payloadData.get(1);
-		String nasaMessage = PayloadData.payloadData.get(2);
-		String orsMessage = PayloadData.payloadData.get(3);
-
 		kafkaTestSupport.sendKafkaMessage(kafkaTopics.getInputTopic(), darpaMessageWithNameFalconSAT2);
 		kafkaTestSupport.sendKafkaMessage(kafkaTopics.getInputTopic(), darpaMessageWithNameDemoSAT); //will be filtered out
 		kafkaTestSupport.sendKafkaMessage(kafkaTopics.getInputTopic(), nasaMessage);
