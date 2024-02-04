@@ -10,4 +10,3 @@
 - Header / processor
 https://stackoverflow.com/questions/61270063/kafka-streams-how-to-get-the-kafka-headers
 
--

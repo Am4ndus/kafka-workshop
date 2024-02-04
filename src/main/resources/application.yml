@@ -10,3 +10,5 @@ kafka:
             genericInputTopic: "inputTopic"
         output:
             genericOutputTopic: "outputTopic"
+            darpaTopic: "darpaTopic"
+            nasaTopic: "nasaTopic"
