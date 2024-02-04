@@ -13,9 +13,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureObservability
 @SpringBootTest
 class KafkaApplicationTests {
-
 	protected final KafkaTestSupport kafkaTestSupport;
-
+	private final String darpaMessageWithNameFalconSAT2 = PayloadData.payloadData.get(0);
+	private final String darpaMessageWithNameDemoSAT = PayloadData.payloadData.get(1);
+	private final String nasaMessage = PayloadData.payloadData.get(2);
+	private final String orsMessage = PayloadData.payloadData.get(3);
 	protected final KafkaTopics kafkaTopics;
 	@Autowired
 	KafkaApplicationTests(KafkaTestSupport kafkaTestSupport, KafkaTopics kafkaTopics){
